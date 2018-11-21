@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserWithData<E> {
-    //f(c) = <c.id, c.hash, {c.datas.get(i) tc i 0...c.gata.size()-1}>
-    //I(c) = c.id != null && c.hash != null && c.datas != null
+    // f(c) = <c.id, c.hash, {c.datas.get(i) tc i 0...c.gata.size()-1}>
+
+    // Inv_UserWithData (c) =
+    // I(c) = c.id != null && c.hash != null && c.datas != null
     //          && for all 0 <= i < c.datas.size() c.datas.get(i) != null
+    //          && for all 0 <= i < c.shared_data.size() => c.shared_data.get(i) != null
 
     private String id;
     private String hash;
@@ -34,10 +37,6 @@ public class UserWithData<E> {
 
     public String getId() {
         return id;
-    }
-
-    public String getHash() {
-        return hash;
     }
 
     public List<E> getDatas (String passwd) throws IncorrectPasswordException {

@@ -3,13 +3,11 @@ import java.util.Iterator;
 import java.util.List;
 
 public class SecureDataContainerList<E> implements SecureDataContainer<E> {
-    //f(c) = {<c.users.get(i).getId(), c.users.get(i).getHash(),
-    //          {c.users.get(i).getDatas(password)}, {c.users.get(i).getDatas(password)}> per ogni i 0...users.size()-1;}
+    // f(c) = {<c.users.get(i).getId(), c.users.get(i).getHash(),
+    //          {c.users.get(i).getDatas(password)}, {c.users.get(i).getSharedDatas(password)}> per ogni i 0..users.size()-1;}
 
-    //I(c) = c.users != null && for all i 0...c.users.size()-1 => c.users.get(i) != null
-    //       && for all 0 <= i < j < c.users.size() => !c.users.get(i).getId().equals(c.users.get(i).getId())
-
-
+    // Inv_SecureDataContainerList (c) =
+    // I(c) = c.users != null && for all i..c.users.size()-1 => Inv_UserWithData(c.users.get(i))
 
     List<UserWithData<E>> users;
 
@@ -34,10 +32,7 @@ public class SecureDataContainerList<E> implements SecureDataContainer<E> {
         if (owner == null || passw == null)
             throw new NullPointerException();
         else {
-            for (UserWithData<E> u : users)
-                if (owner.equals(u.getId()))
-                    u.getDatas(passw).size();
-            throw new UserNotFoundException();
+            return getUser(owner).getDatas(passw).size();
         }
     }
 
@@ -46,10 +41,7 @@ public class SecureDataContainerList<E> implements SecureDataContainer<E> {
         if (owner == null || passw == null || data == null)
             throw new NullPointerException();
         else {
-            for (UserWithData<E> u : users)
-                if (owner.equals(u.getId()))
-                    return u.getDatas(passw).add(data);
-            throw new UserNotFoundException();
+            return getUser(owner).getDatas(passw).add(data);
         }
     }
 
@@ -58,10 +50,7 @@ public class SecureDataContainerList<E> implements SecureDataContainer<E> {
         if (owner == null || passw == null)
             throw new NullPointerException();
         else {
-            for (UserWithData<E> u : users)
-                if (owner.equals(u.getId()))
-                    return u.getDatas(passw).get((int) data);
-            throw new UserNotFoundException();
+            return getUser(owner).getDatas(passw).get(data);
         }
     }
 
@@ -70,15 +59,10 @@ public class SecureDataContainerList<E> implements SecureDataContainer<E> {
         if (owner == null || passw == null || data == null)
             throw new NullPointerException();
         else {
-            for (UserWithData<E> u : users)
-                if (owner.equals(u.getId())) {
-                    if (u.getDatas(passw).remove(data)) //magari sta implementazione è meglio. chiedi a gabri
-                        return data;
-                    else
-                        return null;
-                    //return u.getDatas(passw).remove(u.getDatas(passw).indexOf(data));
-                }
-            throw new UserNotFoundException();
+            if (getUser(owner).getDatas(passw).remove(data)) //magari sta implementazione è meglio. chiedi a gabri
+                return data;
+            else
+                return null;
         }
     }
 
@@ -87,14 +71,11 @@ public class SecureDataContainerList<E> implements SecureDataContainer<E> {
         if (owner == null || passw == null || data == null)
             throw new NullPointerException();
         else {
-            for (UserWithData<E> u : users)
-                if (owner.equals(u.getId())) {
-                    if (u.getDatas(passw).contains(data))
-                        u.getDatas(passw).add(data);
-                    else
-                        throw new DataNotFoundException();
-                }
-            throw new UserNotFoundException();
+            UserWithData<E> u = getUser(owner);
+            if (u.getDatas(passw).contains(data))
+                u.getDatas(passw).add(data);
+            else
+                throw new DataNotFoundException();
         }
     }
 
@@ -103,18 +84,12 @@ public class SecureDataContainerList<E> implements SecureDataContainer<E> {
         if (owner == null || passw == null || other == null || data == null)
             throw new NullPointerException();
         else {
-            for (UserWithData<E> source : users)
-                if (owner.equals(source.getId())) {
-                    for (UserWithData<E> destination : users)
-                        if (other.equals(destination.getId())) {
-                            if (source.getDatas(passw).contains(data))
-                                destination.putShared(data);
-                            else
-                                throw new DataNotFoundException();
-                        }
-                    throw new UserNotFoundException("Non è stato trovato other");
-                }
-            throw new UserNotFoundException("Non è stato trovato owner");
+            UserWithData<E> source = getUser(owner);
+            UserWithData<E> destination = getUser(other);
+            if (source.getDatas(passw).contains(data))
+                destination.putShared(data);
+            else
+                throw new DataNotFoundException();
         }
     }
 
@@ -123,11 +98,7 @@ public class SecureDataContainerList<E> implements SecureDataContainer<E> {
         if (owner == null || passw == null)
             throw new NullPointerException();
         else {
-            for (UserWithData<E> u : users)
-                if (owner.equals(u.getId())) {
-                    return u.getDatas(passw).iterator();
-                }
-            throw new UserNotFoundException();
+            return getUser(owner).getDatas(passw).iterator();
         }
     }
 
@@ -136,14 +107,11 @@ public class SecureDataContainerList<E> implements SecureDataContainer<E> {
         if (owner == null || passw == null || data == null)
             throw new NullPointerException();
         else {
-            for (UserWithData<E> u : users)
-                if (owner.equals(u.getId())) {
-                    if (u.getSharedDatas(passw).remove(data))
-                        return u.getDatas(passw).add(data);
-                    else
-                        throw new DataNotFoundException();
-                }
-            throw new UserNotFoundException();
+            UserWithData<E> u = getUser(owner);
+            if (u.getSharedDatas(passw).remove(data))
+                return u.getDatas(passw).add(data);
+            else
+                throw new DataNotFoundException();
         }
     }
 
@@ -152,11 +120,7 @@ public class SecureDataContainerList<E> implements SecureDataContainer<E> {
         if (owner == null || passw == null)
             throw new NullPointerException();
         else {
-            for (UserWithData<E> u : users)
-                if (owner.equals(u.getId())) {
-                    return u.getSharedDatas(passw).get((int) data);
-                }
-            throw new UserNotFoundException();
+            return getUser(owner).getSharedDatas(passw).get(data);
         }
     }
 
@@ -165,14 +129,19 @@ public class SecureDataContainerList<E> implements SecureDataContainer<E> {
         if (owner == null || passw == null || data == null)
             throw new NullPointerException();
         else {
-            for (UserWithData<E> u : users)
-                if (owner.equals(u.getId())) {
-                    if (u.getSharedDatas(passw).remove(data))
-                        return data;
-                    else
-                        return null;
-                }
-            throw new UserNotFoundException();
+            if (getUser(owner).getSharedDatas(passw).remove(data))
+                return data;
+            else
+                return null;
         }
+    }
+
+    private UserWithData<E> getUser (String owner) throws UserNotFoundException{
+        for (UserWithData<E> u : users) {
+            if (owner.equals(u.getId())) {
+                return u;
+            }
+        }
+        throw new UserNotFoundException("Non è stato trovato l'utente: "+owner);
     }
 }
