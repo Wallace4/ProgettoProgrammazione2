@@ -11,15 +11,11 @@ public class User {
     private String hash;
 
     public User (String id, String passwd) {
-        this.id = id;
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            String strintToHash = this.id + passwd;
-            md.update(strintToHash.getBytes());
-            this.hash = new String(md.digest());
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            System.out.println("Porco il lama lo sha 256");
+        if (id == null || passwd == null) {
+            throw new NullPointerException();
+        } else {
+            this.id = id;
+            this.hash = Hashing.shaDue(id, passwd);
         }
     }
 
@@ -27,22 +23,12 @@ public class User {
         return id;
     }
 
-    public String getHash() {
-        return hash;
-    }
-
     public boolean checkHash (String passwd) {
-        MessageDigest md = null; //Usare BCrypt è troppo scocciante for now
-        try {
-            md = MessageDigest.getInstance("SHA-256");
-            String strintToHash = this.id + passwd;
-            md.update(strintToHash.getBytes());
-            String hashToCheck = new String(md.digest());
+        if (passwd == null)
+            throw new NullPointerException();
+        else {
+            String hashToCheck = Hashing.shaDue(this.id, passwd);
             return this.hash.equals(hashToCheck);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            System.out.println("Porco il lama lo sha 256");
-            return false;
         }
     }
 }
