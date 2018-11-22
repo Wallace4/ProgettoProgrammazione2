@@ -29,4 +29,26 @@ public class Data<E> {
     public List<E> getShared() {
         return shared;
     }
+
+    public Iterator<E> getMergedIterator () { //ancora non so se è utile per la mia implementazione
+        return new Iterator<E>() {
+
+            Iterator<E> itrd = data.iterator();
+            Iterator<E> itrs = shared.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return itrd.hasNext() || itrs.hasNext();
+            }
+
+            @Override
+            public E next() {
+                if (itrd.hasNext()) { //prova a vedere se si può dire quale dei due restituisci
+                    return itrd.next();
+                } else {
+                    return itrs.next();
+                }
+            }
+        };
+    }
 }

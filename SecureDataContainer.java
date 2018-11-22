@@ -47,20 +47,29 @@ public interface SecureDataContainer<E> {
 
 
 
-    /*  REQUIRES: owner != null && passw != null && data != null
+    /*  REQUIRES: owner != null && passw != null && index >= 0 && index < getSize(owner, passw)
         MODIFIES: null
-        EFFECT: ritorna l'oggetto dell'insieme appartenente ad owner e che corrisponde alla posizione data,
+        EFFECT: ritorna l'oggetto dell'insieme appartenente ad owner e che corrisponde alla posizione index,
                 sse la password corrisponde
-                in questo caso data viene inteso come l'indice o la chiave della collezione dove è stato
-                inserito l'oggetto che si vuole recuperare
-        THROWS: NullPointerException sse owner == null || passwd == null || data == null
+        THROWS: NullPointerException sse owner == null || passwd == null
                 UserNotFoundException sse non esiste un owner nella collezione
                 IncorrectPasswordException sse la password inserita non è quella corretta
                 IndexOutOfBoundException sse data < 0 || data >= dimensione dell'insieme di dati condivisi con owner
-
-        alla fine ho messo int e lo spiegherò
      */
-    public E get(String owner, String passw, int data) throws UserNotFoundException, IncorrectPasswordException;
+    public E get(String owner, String passw, int index) throws UserNotFoundException, IncorrectPasswordException;
+
+
+
+    /*  REQUIRES: owner != null && passw != null && data != null
+        MODIFIES: null
+        EFFECT: ritorna l'oggetto dell'insieme appartenente ad owner e che corrisponde all'elemento data,
+                sse la password corrisponde
+        THROWS: NullPointerException sse owner == null || passwd == null || data == null
+                UserNotFoundException sse non esiste un owner nella collezione
+                IncorrectPasswordException sse la password inserita non è quella corretta
+                DataNotFoundException sse data non fa parte dell'insieme di dati appartenenti ad owner
+     */
+    public E get(String owner, String passw, E data) throws UserNotFoundException, IncorrectPasswordException, DataNotFoundException;
 
 
 
@@ -74,6 +83,19 @@ public interface SecureDataContainer<E> {
      */
     public E remove(String owner, String passw, E data) throws UserNotFoundException, IncorrectPasswordException;
 
+
+
+    /*  REQUIRES: owner != null && passw != null && index >= 0 && index < getSize(owner, passw)
+        MODIFIES: this
+        EFFECT: rimuove l'elemento alla posizione index dall'insieme di oggetti appartenenti a owner,
+                sse la password corrisponde.
+                restituisce l'oggetto così rimosso, o null se non era presente
+        THROWS: NullPointerException sse owner == null || passwd == null
+                UserNotFoundException sse non esiste un owner nella collezione
+                IncorrectPasswordException sse la password inserita non è quella corretta
+                IndexOutOfBoundException sse data < 0 || index >= dimensione dell'insieme di dati condivisi con owner
+     */
+    public E remove(String owner, String passw, int index) throws UserNotFoundException, IncorrectPasswordException;
 
 
     /*  REQUIRES: owner != null && passw != null && data != null
@@ -151,4 +173,26 @@ public interface SecureDataContainer<E> {
                 IncorrectPasswordException sse la password inserita non è quella corretta
      */
     public E removeShared (String owner, String passw, E data) throws UserNotFoundException, IncorrectPasswordException;
+
+
+    /*  REQUIRES: owner != null && passw != null
+        MODIFIES: null
+        EFFECT: ritorna un iteratore per l'insieme dei dati condivisi con owner, sse la password corrisponde.
+                quindi l'iteratore permette di navigare solo per gli shared, e non i dati
+        THROWS: NullPointerException sse owner == null || passwd == null
+                UserNotFoundException sse non esiste un owner nella collezione
+                IncorrectPasswordException sse la password inserita non è quella corretta
+     */
+    public Iterator<E> getSharedIterator(String owner, String passw) throws UserNotFoundException, IncorrectPasswordException;
+
+
+    /*  REQUIRES: owner != null && passw != null
+        MODIFIES: null
+        EFFECT: ritorna un iteratore per l'insieme dei dati condivisi ed appartenenti ad owner, sse la password corrisponde.
+                quindi l'iteratore permette di navigare sia per shared che owner, e identificherà se il dato è in uno o nell'altro insieme
+        THROWS: NullPointerException sse owner == null || passwd == null
+                UserNotFoundException sse non esiste un owner nella collezione
+                IncorrectPasswordException sse la password inserita non è quella corretta
+     */
+    public Iterator<E> getChainedIterator(String owner, String passw) throws UserNotFoundException, IncorrectPasswordException;
 }

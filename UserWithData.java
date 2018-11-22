@@ -1,6 +1,7 @@
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class UserWithData<E> {
@@ -53,6 +54,31 @@ public class UserWithData<E> {
             throw new IncorrectPasswordException();
         }
 
+    }
+
+    public Iterator<E> getMergedIterator (String passwd) throws IncorrectPasswordException {
+        if (checkHash(passwd)) {
+            return new Iterator<E>() {
+
+                Iterator<E> itrd = datas.iterator();
+                Iterator<E> itrs = shared_data.iterator();
+
+                @Override
+                public boolean hasNext() {
+                    return itrs.hasNext() || itrd.hasNext();
+                }
+
+                @Override
+                public E next() {
+                    if (itrd.hasNext()) { //prova a vedere se si può dire quale dei due restituisci
+                        return itrd.next();
+                    } else {
+                        return itrs.next();
+                    }
+                }
+            };
+        } else
+            throw new IncorrectPasswordException();
     }
 
     public void putShared (E data) {

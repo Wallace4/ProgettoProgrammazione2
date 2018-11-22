@@ -46,11 +46,25 @@ public class SecureDataContainerList<E> implements SecureDataContainer<E> {
     }
 
     @Override
-    public E get(String owner, String passw, int data) throws UserNotFoundException, IncorrectPasswordException {
+    public E get(String owner, String passw, int index) throws UserNotFoundException, IncorrectPasswordException {
         if (owner == null || passw == null)
             throw new NullPointerException();
         else {
-            return getUser(owner).getDatas(passw).get(data);
+            return getUser(owner).getDatas(passw).get(index);
+        }
+    }
+
+    @Override
+    public E get(String owner, String passw, E data) throws UserNotFoundException, IncorrectPasswordException, DataNotFoundException {
+        if (owner == null || passw == null)
+            throw new NullPointerException();
+        else {
+            List<E> d = getUser(owner).getDatas(passw);
+            int index = d.indexOf(data);
+            if (index < 0)
+                throw new DataNotFoundException();
+            else
+                return d.get(index);
         }
     }
 
@@ -63,6 +77,15 @@ public class SecureDataContainerList<E> implements SecureDataContainer<E> {
                 return data;
             else
                 return null;
+        }
+    }
+
+    @Override
+    public E remove(String owner, String passw, int index) throws UserNotFoundException, IncorrectPasswordException {
+        if (owner == null || passw == null)
+            throw new NullPointerException();
+        else {
+            return getUser(owner).getDatas(passw).remove(index);
         }
     }
 
@@ -133,6 +156,24 @@ public class SecureDataContainerList<E> implements SecureDataContainer<E> {
                 return data;
             else
                 return null;
+        }
+    }
+
+    @Override
+    public Iterator<E> getSharedIterator(String owner, String passw) throws UserNotFoundException, IncorrectPasswordException {
+        if (owner == null || passw == null)
+            throw new NullPointerException();
+        else {
+            return getUser(owner).getSharedDatas(passw).iterator();
+        }
+    }
+
+    @Override
+    public Iterator<E> getChainedIterator(String owner, String passw) throws UserNotFoundException, IncorrectPasswordException {
+        if (owner == null || passw == null)
+            throw new NullPointerException();
+        else {
+            return getUser(owner).getMergedIterator(passw);
         }
     }
 
