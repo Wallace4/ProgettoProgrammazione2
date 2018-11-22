@@ -9,36 +9,25 @@ public class TestSDCL {
             sdcl.createUser("Alfonso", "Sangue");
             sdcl.createUser("Lorenza", "Vita");
             sdcl.createUser("Daniele", "Vuoto");
-        } catch (NameAlreadyTakenException e) {
-            e.printStackTrace();
-        }
 
-        try {
-            sdcl.createUser("Michele", "Tempo");
-        } catch (NameAlreadyTakenException e) {
-            System.out.println("Im already tracer");
-        }
+            //sdcl.createUser("Michele", "Tempo");  //throwa NATE
 
-        try {
             sdcl.put("Gabriele", "Luce", "Heir");
-        } catch (UserNotFoundException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        } catch (IncorrectPasswordException e) {
-            System.out.println("Attenzione, la password inserita non è corretta");
-            e.printStackTrace();
-        }
+            assert sdcl.getSize("Gabriele", "Luce") == 1;
 
-        try {
-            sdcl.copy("Gabriele", "Luce", "Hair");
+            sdcl.copy("Gabriele", "Luce", "Hair"); //throwa UNFE
         } catch (UserNotFoundException e) {
+            System.out.println("UNFE:");
             System.out.println(e.getMessage());
-            e.printStackTrace();
         } catch (IncorrectPasswordException e) {
-            System.out.println("Attenzione, la password inserita non è corretta");
-            e.printStackTrace();
+            System.out.println("IPE:");
+            System.out.println(e.getMessage());
         } catch (DataNotFoundException e) {
-            System.out.println("Non è stato trovato il dato");
+            System.out.println("DNFE:");
+            System.out.println(e.getMessage());
+        } catch (NameAlreadyTakenException e) {
+            System.out.println("NATE:");
+            System.out.println(e.getMessage());
         }
 
 

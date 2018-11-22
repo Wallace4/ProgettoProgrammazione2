@@ -37,7 +37,7 @@ public class SecureDataContainerDoubleList<E> implements SecureDataContainer<E> 
         else {
             for (User u : users)
                 if (u.getId().equals(id))
-                    throw new NameAlreadyTakenException();
+                    throw new NameAlreadyTakenException("Il nome "+id+" è già stato preso");
             users.add(new User(id, passw));
             users_data.add(new Data<E>());
         }
@@ -116,7 +116,7 @@ public class SecureDataContainerDoubleList<E> implements SecureDataContainer<E> 
             if (users_data.get(users.indexOf(u)).getData().contains(data))
                 users_data.get(users.indexOf(u)).getData().add(data);
             else
-                throw new DataNotFoundException();
+                throw new DataNotFoundException("Non è stato trovato il dato nell'insieme di elementi di "+owner);
         }
     }
 
@@ -132,7 +132,7 @@ public class SecureDataContainerDoubleList<E> implements SecureDataContainer<E> 
                         users_data.get(users.indexOf(destination)).getShared().add(new SharedData<E>(other, data));
                         return;
                     } else
-                        throw new DataNotFoundException();
+                        throw new DataNotFoundException("Non è stato trovato il dato nell'insieme di elementi di "+owner);
                 }
             }
             throw new UserNotFoundException("Non è stato trovato l'utente: "+other);
@@ -157,7 +157,7 @@ public class SecureDataContainerDoubleList<E> implements SecureDataContainer<E> 
             if (users_data.get(users.indexOf(u)).getShared().remove(data))
                 return users_data.get(users.indexOf(u)).getData().add(data);
             else
-                throw new DataNotFoundException();
+                throw new DataNotFoundException("Non è stato trovato il dato nell'insieme di elementi condivisi con "+owner);
         }
     }
 
@@ -197,7 +197,7 @@ public class SecureDataContainerDoubleList<E> implements SecureDataContainer<E> 
                 if (u.checkHash(passw)) {
                     return u;
                 } else
-                    throw new IncorrectPasswordException();
+                    throw new IncorrectPasswordException("La password inserita per "+owner+" non è corretta");
             }
         }
         throw new UserNotFoundException("Non è stato trovato l'utente: "+owner);

@@ -38,7 +38,7 @@ public class UserWithData<E> {
             return this.datas;
         }
         else {
-            throw new IncorrectPasswordException();
+            throw new IncorrectPasswordException("La password inserita per "+this.id+" non è corretta");
         }
 
     }
@@ -50,7 +50,7 @@ public class UserWithData<E> {
             return this.shared_data;
         }
         else {
-            throw new IncorrectPasswordException();
+            throw new IncorrectPasswordException("La password inserita per "+this.id+" non è corretta");
         }
 
     }

@@ -23,7 +23,7 @@ public class SecureDataContainerList<E> implements SecureDataContainer<E> {
         else {
             for (UserWithData<E> u : users)
                 if (id.equals(u.getId()))
-                    throw new NameAlreadyTakenException();
+                    throw new NameAlreadyTakenException("Il nome "+id+" è già stato preso");
             users.add(new UserWithData<E>(id, passw));
         }
     }
@@ -99,7 +99,7 @@ public class SecureDataContainerList<E> implements SecureDataContainer<E> {
             if (u.getDatas(passw).contains(data))
                 u.getDatas(passw).add(data);
             else
-                throw new DataNotFoundException();
+                throw new DataNotFoundException("Non è stato trovato il dato nell'insieme di elementi di "+owner);
         }
     }
 
@@ -113,7 +113,7 @@ public class SecureDataContainerList<E> implements SecureDataContainer<E> {
             if (source.getDatas(passw).contains(data))
                 destination.putShared(other, data);
             else
-                throw new DataNotFoundException();
+                throw new DataNotFoundException("Non è stato trovato il dato nell'insieme di elementi di "+owner);
         }
     }
 
@@ -135,7 +135,7 @@ public class SecureDataContainerList<E> implements SecureDataContainer<E> {
             if (u.getSharedDatas(passw).remove(data))
                 return u.getDatas(passw).add(data);
             else
-                throw new DataNotFoundException();
+                throw new DataNotFoundException("Non è stato trovato il dato nell'insieme di elementi condivisi con "+owner);
         }
     }
 
