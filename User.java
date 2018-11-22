@@ -1,6 +1,3 @@
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 public class User {
     //f(c) = <c.id, c.hash>
 

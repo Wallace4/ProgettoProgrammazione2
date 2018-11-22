@@ -4,7 +4,9 @@ import java.util.List;
 
 public class SecureDataContainerDoubleList<E> implements SecureDataContainer<E> {
     // f(c) = {<c.users.get(i).getId(), c.users.get(i).getHash(),
-    //          {c.users_data.get(i).getData()}, {c.users_data.get(i).getShared()}> per ogni i 0...users.size()-1;}
+    //          {c.users_data.get(i).getData()},
+    //          {c.users_data.get(i).getShared()}>
+    //              per ogni i 0...users.size()-1;}
 
 /*  // I(c) = c.users != null && c.users_data != null && for all i 0..c.users.size()-1 => c.users.get(i) != null
     //       && for all 0 <= i < j < c.users.size() => !c.users.get(i).getId().equals(c.users.get(j).getId())
@@ -85,7 +87,7 @@ public class SecureDataContainerDoubleList<E> implements SecureDataContainer<E> 
 
     @Override
     public E remove(String owner, String passw, E data) throws UserNotFoundException, IncorrectPasswordException {
-        if (owner == null || passw == null || data != null)
+        if (owner == null || passw == null || data == null)
             throw new NullPointerException();
         else {
             if (users_data.get(users.indexOf(getUser(owner, passw))).getData().remove(data))
@@ -127,7 +129,7 @@ public class SecureDataContainerDoubleList<E> implements SecureDataContainer<E> 
             for (User destination : users) {
                 if (other.equals(destination.getId())) {
                     if (users_data.get(users.indexOf(source)).getData().contains(data)) {
-                        users_data.get(users.indexOf(destination)).getShared().add(data);
+                        users_data.get(users.indexOf(destination)).getShared().add(new SharedData<E>(other, data));
                         return;
                     } else
                         throw new DataNotFoundException();
@@ -160,11 +162,11 @@ public class SecureDataContainerDoubleList<E> implements SecureDataContainer<E> 
     }
 
     @Override
-    public E getShared(String owner, String passw, int data) throws UserNotFoundException, IncorrectPasswordException {
+    public SharedData<E> getShared(String owner, String passw, int index) throws UserNotFoundException, IncorrectPasswordException {
         if (owner == null || passw == null)
             throw new NullPointerException();
         else {
-            return users_data.get(users.indexOf(getUser(owner, passw))).getShared().get(data);
+            return users_data.get(users.indexOf(getUser(owner, passw))).getShared().get(index);
         }
     }
 
@@ -181,21 +183,11 @@ public class SecureDataContainerDoubleList<E> implements SecureDataContainer<E> 
     }
 
     @Override
-    public Iterator<E> getSharedIterator(String owner, String passw) throws UserNotFoundException, IncorrectPasswordException {
+    public Iterator<SharedData<E>> getSharedIterator(String owner, String passw) throws UserNotFoundException, IncorrectPasswordException {
         if (owner == null || passw == null)
             throw new NullPointerException();
         else {
             return users_data.get(users.indexOf(getUser(owner, passw))).getShared().iterator();
-        }
-    }
-
-    //mmmmmmmmmmmm non so
-    @Override
-    public Iterator<E> getChainedIterator(String owner, String passw) throws UserNotFoundException, IncorrectPasswordException {
-        if (owner == null || passw == null)
-            throw new NullPointerException();
-        else {
-            return users_data.get(users.indexOf(getUser(owner, passw))).getMergedIterator();
         }
     }
 

@@ -1,5 +1,3 @@
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,11 +9,12 @@ public class UserWithData<E> {
     // I(c) = c.id != null && c.hash != null && c.datas != null
     //          && for all 0 <= i < c.datas.size() c.datas.get(i) != null
     //          && for all 0 <= i < c.shared_data.size() => c.shared_data.get(i) != null
+    //                                                      && Inv_SharedData(c.shared_data.get(i))
 
     private String id;
     private String hash;
     private List<E> datas;
-    private List<E> shared_data;
+    private List<SharedData<E>> shared_data;
 
     public UserWithData (String id, String passwd) {
         if (id == null || passwd == null)
@@ -24,7 +23,7 @@ public class UserWithData<E> {
             this.id = id;
             this.hash = Hashing.shaDue(this.id, passwd);
             datas = new ArrayList<E>();
-            shared_data = new ArrayList<E>();
+            shared_data = new ArrayList<SharedData<E>>();
         }
     }
 
@@ -44,7 +43,7 @@ public class UserWithData<E> {
 
     }
 
-    public List<E> getSharedDatas (String passwd) throws IncorrectPasswordException {
+    public List<SharedData<E>> getSharedDatas (String passwd) throws IncorrectPasswordException {
         if (passwd == null)
             throw new NullPointerException();
         if (checkHash(passwd)) {
@@ -56,36 +55,11 @@ public class UserWithData<E> {
 
     }
 
-    public Iterator<E> getMergedIterator (String passwd) throws IncorrectPasswordException {
-        if (checkHash(passwd)) {
-            return new Iterator<E>() {
-
-                Iterator<E> itrd = datas.iterator();
-                Iterator<E> itrs = shared_data.iterator();
-
-                @Override
-                public boolean hasNext() {
-                    return itrs.hasNext() || itrd.hasNext();
-                }
-
-                @Override
-                public E next() {
-                    if (itrd.hasNext()) { //prova a vedere se si può dire quale dei due restituisci
-                        return itrd.next();
-                    } else {
-                        return itrs.next();
-                    }
-                }
-            };
-        } else
-            throw new IncorrectPasswordException();
-    }
-
-    public void putShared (E data) {
+    public void putShared (String other, E data) {
         if (data == null)
             throw new NullPointerException();
         else
-            shared_data.add(data);
+            shared_data.add(new SharedData<E>(other, data));
     }
 
     public boolean checkHash (String passwd) {

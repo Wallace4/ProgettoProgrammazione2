@@ -75,7 +75,8 @@ public interface SecureDataContainer<E> {
 
     /*  REQUIRES: owner != null && passw != null && data != null
         MODIFIES: this
-        EFFECT: rimuove l'elemento data dall'insieme di oggetti appartenenti a owner, sse la password corrisponde
+        EFFECT: rimuove la prima occorrenza dell'elemento data dall'insieme di oggetti appartenenti a owner,
+                sse la password corrisponde
                 restituisce l'oggetto così rimosso, o null se non era presente
         THROWS: NullPointerException sse owner == null || passwd == null || data == null
                 UserNotFoundException sse non esiste un owner nella collezione
@@ -87,8 +88,8 @@ public interface SecureDataContainer<E> {
 
     /*  REQUIRES: owner != null && passw != null && index >= 0 && index < getSize(owner, passw)
         MODIFIES: this
-        EFFECT: rimuove l'elemento alla posizione index dall'insieme di oggetti appartenenti a owner,
-                sse la password corrisponde.
+        EFFECT: rimuove la prima occorrenza dell'elemento alla posizione index dall'insieme di oggetti
+                appartenenti a owner, sse la password corrisponde.
                 restituisce l'oggetto così rimosso, o null se non era presente
         THROWS: NullPointerException sse owner == null || passwd == null
                 UserNotFoundException sse non esiste un owner nella collezione
@@ -159,7 +160,7 @@ public interface SecureDataContainer<E> {
                 IncorrectPasswordException sse la password inserita non è quella corretta
                 IndexOutOfBoundException sse data < 0 || data >= dimensione dell'insieme di dati condivisi con owner
      */
-    public E getShared (String owner, String passw, int data) throws UserNotFoundException, IncorrectPasswordException;
+    public SharedData<E> getShared (String owner, String passw, int index) throws UserNotFoundException, IncorrectPasswordException;
 
 
 
@@ -183,16 +184,6 @@ public interface SecureDataContainer<E> {
                 UserNotFoundException sse non esiste un owner nella collezione
                 IncorrectPasswordException sse la password inserita non è quella corretta
      */
-    public Iterator<E> getSharedIterator(String owner, String passw) throws UserNotFoundException, IncorrectPasswordException;
+    public Iterator<SharedData<E>> getSharedIterator(String owner, String passw) throws UserNotFoundException, IncorrectPasswordException;
 
-
-    /*  REQUIRES: owner != null && passw != null
-        MODIFIES: null
-        EFFECT: ritorna un iteratore per l'insieme dei dati condivisi ed appartenenti ad owner, sse la password corrisponde.
-                quindi l'iteratore permette di navigare sia per shared che owner, e identificherà se il dato è in uno o nell'altro insieme
-        THROWS: NullPointerException sse owner == null || passwd == null
-                UserNotFoundException sse non esiste un owner nella collezione
-                IncorrectPasswordException sse la password inserita non è quella corretta
-     */
-    public Iterator<E> getChainedIterator(String owner, String passw) throws UserNotFoundException, IncorrectPasswordException;
 }
