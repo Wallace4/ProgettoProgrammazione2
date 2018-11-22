@@ -9,7 +9,7 @@ public class SecureDataContainerList<E> implements SecureDataContainer<E> {
     // Inv_SecureDataContainerList (c) =
     // I(c) = c.users != null && for all i..c.users.size()-1 => Inv_UserWithData(c.users.get(i))
 
-    List<UserWithData<E>> users;
+    private List<UserWithData<E>> users;
 
     public SecureDataContainerList() {
         this.users = new ArrayList<UserWithData<E>>();
