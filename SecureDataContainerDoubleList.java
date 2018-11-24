@@ -171,7 +171,7 @@ public class SecureDataContainerDoubleList<E> implements SecureDataContainer<E> 
     }
 
     @Override
-    public E removeShared(String owner, String passw, E data) throws UserNotFoundException, IncorrectPasswordException {
+    public SharedData<E> removeShared(String owner, String passw, SharedData<E> data) throws UserNotFoundException, IncorrectPasswordException {
         if (owner == null || passw == null || data == null)
             throw new NullPointerException();
         else {

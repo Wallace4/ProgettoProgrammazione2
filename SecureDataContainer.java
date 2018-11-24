@@ -173,7 +173,7 @@ public interface SecureDataContainer<E> {
                 UserNotFoundException sse non esiste un owner nella collezione
                 IncorrectPasswordException sse la password inserita non è quella corretta
      */
-    public E removeShared (String owner, String passw, E data) throws UserNotFoundException, IncorrectPasswordException;
+    public SharedData<E> removeShared (String owner, String passw, SharedData<E> data) throws UserNotFoundException, IncorrectPasswordException;
 
 
     /*  REQUIRES: owner != null && passw != null
