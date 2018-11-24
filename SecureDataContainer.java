@@ -36,6 +36,15 @@ public interface SecureDataContainer<E> {
     public int getSize(String owner, String passw) throws UserNotFoundException, IncorrectPasswordException;
 
 
+    /*  REQUIRES: owner != null && passw != null
+        MODIFIES: null
+        EFFECT: ritorna la cardinalità dell'insieme di oggetti condivisi con owner sse la password corrisponde
+        THROWS: NullPointerException sse owner == null || passwd == null
+                UserNotFoundException sse non esiste un owner nella collezione
+                IncorrectPasswordException sse la password inserita non è quella corretta
+     */
+    public int getSharedSize(String owner, String passw) throws UserNotFoundException, IncorrectPasswordException;
+
     /*  REQUIRES: owner != null && passw != null && data != null
         MODIFIES: this
         EFFECT: Inserisce data dentro l'insieme di oggetti appartenenti ad owner sse la password corrisponde

@@ -55,6 +55,17 @@ public class SecureDataContainerDoubleList<E> implements SecureDataContainer<E> 
     }
 
     @Override
+    public int getSharedSize(String owner, String passw) throws UserNotFoundException, IncorrectPasswordException {
+        if (owner == null || passw == null)
+            throw new NullPointerException();
+        else {
+            //getUser restituisce le eccezzioni o l'elemento User corrispondente, poi ne viene trovato l'indice
+            //e si accede al data corrispondente nell'altra lista. Poi si ritorna la size
+            return users_data.get(users.indexOf(getUser(owner, passw))).getShared().size();
+        }
+    }
+
+    @Override
     public boolean put(String owner, String passw, E data) throws UserNotFoundException, IncorrectPasswordException{
         if (owner == null || passw == null || data == null)
             throw new NullPointerException();

@@ -38,6 +38,15 @@ public class SecureDataContainerList<E> implements SecureDataContainer<E> {
     }
 
     @Override
+    public int getSharedSize(String owner, String passw) throws UserNotFoundException, IncorrectPasswordException {
+        if (owner == null || passw == null)
+            throw new NullPointerException();
+        else {
+            return getUser(owner).getSharedDatas(passw).size();
+        }
+    }
+
+    @Override
     public boolean put(String owner, String passw, E data) throws UserNotFoundException, IncorrectPasswordException {
         if (owner == null || passw == null || data == null)
             throw new NullPointerException();

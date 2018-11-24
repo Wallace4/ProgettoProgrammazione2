@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class TestSDCL {
@@ -70,17 +71,24 @@ public class TestSDCL {
             sdcl.share("Gabriele", "Luce", "Alfonso", "Magician");
             sdcl.share("Michele", "Anima", "Alfonso", "Seer");
             assert sdcl.getSize("Alfonso", "Sangue") == 0;
+            assert sdcl.getSharedSize("Alfonso", "Sangue") == 4;
+
             //test iterator per accettare gli shared
+            ArrayList<SharedData<String>> asd = new ArrayList<>();
             for (Iterator<SharedData<String>> it = sdcl.getSharedIterator("Alfonso", "Sangue"); it.hasNext(); ) {
                 SharedData<String> sd = it.next();
                 if (sd.getOwner().equals("Gabriele")) {
-                    sdcl.insertShared("Alfonso", "Sangue", sd);
+                    //sdcl.insertShared("Alfonso", "Sangue", sd);
+                    asd.add(sd);
                 }
-
             }
-
-            //assert sdcl.getSize("Alfonso", "Sangue") == 3;
-            System.out.println(sdcl.getSize("Alfonso", "Sangue"));
+            //dato che all'intero di insert shared rimuovo gli elementi dalla lista allora devo prima copiarli e poi usare il metodo
+            //se no l'iteratore si arrabbia
+            for (SharedData<String> sd : asd) {
+                sdcl.insertShared("Alfonso", "Sangue", sd);
+            }
+            assert sdcl.getSize("Alfonso", "Sangue") == 3;
+            assert sdcl.getSharedSize("Alfonso", "Sangue") == 1;
 
         } catch (UserNotFoundException e) {
             System.out.println("UNFE:");
