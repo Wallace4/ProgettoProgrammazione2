@@ -147,7 +147,7 @@ public interface SecureDataContainer<E> {
                 IncorrectPasswordException sse la password inserita non è quella corretta
                 DataNotFoundException sse il data da accettare non è presente nell'insieme di oggetti condivisi con owner
      */
-    public boolean insertShared (String owner, String passw, E data) throws UserNotFoundException, IncorrectPasswordException, DataNotFoundException;
+    public boolean insertShared (String owner, String passw, SharedData<E> data) throws UserNotFoundException, IncorrectPasswordException, DataNotFoundException;
 
 
 

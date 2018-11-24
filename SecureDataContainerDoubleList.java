@@ -149,13 +149,13 @@ public class SecureDataContainerDoubleList<E> implements SecureDataContainer<E> 
     }
 
     @Override
-    public boolean insertShared(String owner, String passw, E data) throws UserNotFoundException, IncorrectPasswordException, DataNotFoundException {
+    public boolean insertShared(String owner, String passw, SharedData<E> data) throws UserNotFoundException, IncorrectPasswordException, DataNotFoundException {
         if (owner == null || passw == null || data == null)
             throw new NullPointerException();
         else {
             User u = getUser(owner, passw);
             if (users_data.get(users.indexOf(u)).getShared().remove(data))
-                return users_data.get(users.indexOf(u)).getData().add(data);
+                return users_data.get(users.indexOf(u)).getData().add(data.getData());
             else
                 throw new DataNotFoundException("Non è stato trovato il dato nell'insieme di elementi condivisi con "+owner);
         }

@@ -127,13 +127,13 @@ public class SecureDataContainerList<E> implements SecureDataContainer<E> {
     }
 
     @Override
-    public boolean insertShared(String owner, String passw, E data) throws UserNotFoundException, IncorrectPasswordException, DataNotFoundException {
+    public boolean insertShared(String owner, String passw, SharedData<E> data) throws UserNotFoundException, IncorrectPasswordException, DataNotFoundException {
         if (owner == null || passw == null || data == null)
             throw new NullPointerException();
         else {
             UserWithData<E> u = getUser(owner);
             if (u.getSharedDatas(passw).remove(data))
-                return u.getDatas(passw).add(data);
+                return u.getDatas(passw).add(data.getData());
             else
                 throw new DataNotFoundException("Non è stato trovato il dato nell'insieme di elementi condivisi con "+owner);
         }
