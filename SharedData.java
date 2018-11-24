@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class SharedData<E> {
     // f(c) = <owner, data>
 
@@ -18,5 +20,14 @@ public class SharedData<E> {
 
     public E getData() {
         return data;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SharedData<?> that = (SharedData<?>) o;
+        return Objects.equals(owner, that.owner) &&
+                Objects.equals(data, that.data);
     }
 }

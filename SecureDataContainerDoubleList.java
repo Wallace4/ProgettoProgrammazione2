@@ -129,7 +129,7 @@ public class SecureDataContainerDoubleList<E> implements SecureDataContainer<E> 
             for (User destination : users) {
                 if (other.equals(destination.getId())) {
                     if (users_data.get(users.indexOf(source)).getData().contains(data)) {
-                        users_data.get(users.indexOf(destination)).getShared().add(new SharedData<E>(other, data));
+                        users_data.get(users.indexOf(destination)).getShared().add(new SharedData<E>(owner, data));
                         return;
                     } else
                         throw new DataNotFoundException("Non è stato trovato il dato nell'insieme di elementi di "+owner);

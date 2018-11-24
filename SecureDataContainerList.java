@@ -111,7 +111,7 @@ public class SecureDataContainerList<E> implements SecureDataContainer<E> {
             UserWithData<E> source = getUser(owner);
             UserWithData<E> destination = getUser(other);
             if (source.getDatas(passw).contains(data))
-                destination.putShared(other, data);
+                destination.putShared(owner, data);
             else
                 throw new DataNotFoundException("Non è stato trovato il dato nell'insieme di elementi di "+owner);
         }
