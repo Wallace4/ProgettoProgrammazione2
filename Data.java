@@ -2,7 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Data<E> {
-    // f(c) = <{c.data.get(i)    per ogni i 0..c.data.size()-1}, {c.shared.get(i)    per ogni i 0..c.shared.size()-1}
+    // Fun_Data (c) =
+    // f(c) = <{c.data.get(i) per ogni i 0..c.data.size()-1},
+    //          {<Fun_SharedData(c.shared.get(i))> per ogni i 0..c.shared.size()-1}>
 
     // Inv_Data (c) =
     // I(c) = c.data != null && for all 0 <= i < c.data.size() => c.data.get(i) != null &&

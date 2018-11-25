@@ -1,6 +1,7 @@
 import java.util.Objects;
 
 public class SharedData<E> {
+    // Fun_SharedData(c) =
     // f(c) = <owner, data>
 
     // Inv_SharedData(c) =

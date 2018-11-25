@@ -15,6 +15,7 @@ public interface SecureDataContainer<E> {
                     Dove:
                         data_shared_j è il dato che è stato condiviso all'utente i
                         data_owner_j è l'utente che ha condiviso il dato con l'utente i
+                        m_i rappresenta il numero di dati condivisi con l'utente i
               per ogni 0 <= i < n
 
               Inoltre per ogni 0 <= i < j < n allora id_i != id_j, quindi non ci possono essere User con nomi uguali.

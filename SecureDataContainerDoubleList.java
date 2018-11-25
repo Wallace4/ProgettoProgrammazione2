@@ -3,10 +3,8 @@ import java.util.Iterator;
 import java.util.List;
 
 public class SecureDataContainerDoubleList<E> implements SecureDataContainer<E> {
-    // f(c) = {<c.users.get(i).getId(), c.users.get(i).getHash(),
-    //          {c.users_data.get(i).getData()},
-    //          {c.users_data.get(i).getShared()}>
-    //              per ogni i 0...users.size()-1;}
+    // f(c) = {<Fun_User(c.users.get(i),
+    //          Fun_Data(c.users_data.get(i)> per ogni i 0...users.size()-1;}
 
 /*  // I(c) = c.users != null && c.users_data != null && for all i 0..c.users.size()-1 => c.users.get(i) != null
     //       && for all 0 <= i < j < c.users.size() => !c.users.get(i).getId().equals(c.users.get(j).getId())

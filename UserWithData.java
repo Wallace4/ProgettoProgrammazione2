@@ -2,17 +2,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserWithData<E> {
-    // f(c) = <c.id, c.hash, {c.datas.get(i) tc i 0...c.gat(i).size()-1}>
+    // Fun_UserWithData (c) =
+    // f(c) = <c.id, c.hash,
+    //          {c.data.get(i) per ogni i 0...c.data.size()-1},
+    //          {<Fun_SharedData(shared_data.get(i))> per ogni i 0...c.shared_data.size()-1}>
 
     // Inv_UserWithData (c) =
-    // I(c) = c.id != null && c.hash != null && c.datas != null
-    //          && for all 0 <= i < c.datas.size() c.datas.get(i) != null
+    // I(c) = c.id != null && c.hash != null && c.data != null
+    //          && for all 0 <= i < c.data.size() c.data.get(i) != null
     //          && for all 0 <= i < c.shared_data.size() => c.shared_data.get(i) != null
     //                                                      && Inv_SharedData(c.shared_data.get(i))
 
     private String id;
     private String hash;
-    private List<E> datas;
+    private List<E> data;
     private List<SharedData<E>> shared_data;
 
     public UserWithData (String id, String passwd) {
@@ -21,7 +24,7 @@ public class UserWithData<E> {
         else {
             this.id = id;
             this.hash = Hashing.shaDue(this.id, passwd);
-            datas = new ArrayList<E>();
+            data = new ArrayList<E>();
             shared_data = new ArrayList<SharedData<E>>();
         }
     }
@@ -30,11 +33,11 @@ public class UserWithData<E> {
         return id;
     }
 
-    public List<E> getDatas (String passwd) throws IncorrectPasswordException {
+    public List<E> getData(String passwd) throws IncorrectPasswordException {
         if (passwd == null)
             throw new NullPointerException();
         if (checkHash(passwd)) {
-            return this.datas;
+            return this.data;
         }
         else {
             throw new IncorrectPasswordException("La password inserita per "+this.id+" non è corretta");
@@ -42,7 +45,7 @@ public class UserWithData<E> {
 
     }
 
-    public List<SharedData<E>> getSharedDatas (String passwd) throws IncorrectPasswordException {
+    public List<SharedData<E>> getSharedData(String passwd) throws IncorrectPasswordException {
         if (passwd == null)
             throw new NullPointerException();
         if (checkHash(passwd)) {

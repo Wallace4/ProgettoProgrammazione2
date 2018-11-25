@@ -1,8 +1,9 @@
 public class User {
-    //f(c) = <c.id, c.hash>
+    // Fun_User (c) =
+    // f(c) = <c.id, c.hash>
 
-    //Inv_User (c) =
-    //I(c) = c.id != null && c.hash != null
+    // Inv_User (c) =
+    // I(c) = c.id != null && c.hash != null
 
     private String id;
     private String hash;
