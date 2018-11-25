@@ -3,15 +3,20 @@ import java.util.Iterator;
 public interface SecureDataContainer<E> {
     /*  OVERVIEW: Contenitore di oggetti di tipo E a cui è possibile accedere e modificare i dati solo
                     se ne si è autorizzati.
-                    la password, per motivi di sicurezza, non viene memorizzata all'interno dell'oggetto,
-                    ma ne viene memorizzato un hash, che non è visibile nell'attuale visione dell'interfaccia.
+                    l'autorizzazione viene da un confrontro tra l'utente e la password (Salvata in chiaro o meno)
 
-        Typical Element: { <id_0, pass_0, {data_0}, {shared_0}>, ..., <id_n-1, pass_n-1, {data_n-1}, {shared_n-1}> }
+        Typical Element: { <id_0, pass_0, {data_0}, {shared_0}>,
+                            ..., <id_n-1, pass_n-1, {data_n-1}, {shared_n-1}> }
         Dove: id_i è una stringa contenente l'identificativo di un utente;
               pass_i è la password dell'user i criptata o in chiaro;
               data_i è un insieme di dati appartenenti all'utente i;
-              shared_i è un insieme di dati che sono stati condivisi con l'utente i;
+              shared_i è un insieme di dati che sono stati condivisi con l'utente i così formato:
+                    <data_shared_j, data_owner_j> per ogni 0 <= j < m_i
+                    Dove:
+                        data_shared_j è il dato che è stato condiviso all'utente i
+                        data_owner_j è l'utente che ha condiviso il dato con l'utente i
               per ogni 0 <= i < n
+
               Inoltre per ogni 0 <= i < j < n allora id_i != id_j, quindi non ci possono essere User con nomi uguali.
      */
 
