@@ -85,7 +85,7 @@ public class SecureDataContainerDoubleList<E> implements SecureDataContainer<E> 
 
     @Override
     public E get(String owner, String passw, E data) throws UserNotFoundException, IncorrectPasswordException, DataNotFoundException {
-        if (owner == null || passw == null)
+        if (owner == null || passw == null || data == null)
             throw new NullPointerException();
         else {
             int index = users_data.indexOf(data);

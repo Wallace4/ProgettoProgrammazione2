@@ -4,6 +4,8 @@ import java.util.Iterator;
 public class TestSDCL {
 
     public static void main(String[] args) {
+        //Qualsiasi dei due si usi, funziona, perché sono implementazioni diverse della stessa interfaccia
+        //SecureDataContainer<String> sdcl = new SecureDataContainerDoubleList<String>();
         SecureDataContainer<String> sdcl = new SecureDataContainerList<String>();
 
         try {
@@ -89,6 +91,8 @@ public class TestSDCL {
             }
             assert sdcl.getSize("Alfonso", "Sangue") == 3;
             assert sdcl.getSharedSize("Alfonso", "Sangue") == 1;
+
+
 
         } catch (UserNotFoundException e) {
             System.out.println("UNFE:");
