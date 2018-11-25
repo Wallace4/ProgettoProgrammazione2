@@ -6,18 +6,17 @@ public class SecureDataContainerDoubleList<E> implements SecureDataContainer<E> 
     // f(c) = {<Fun_User(c.users.get(i),
     //          Fun_Data(c.users_data.get(i)> per ogni i 0...users.size()-1;}
 
-/*  // I(c) = c.users != null && c.users_data != null && for all i 0..c.users.size()-1 => c.users.get(i) != null
-    //       && for all 0 <= i < j < c.users.size() => !c.users.get(i).getId().equals(c.users.get(j).getId())
-    //       && for all i 0..c.users_data.size()-1  => (c.users_data.get(i) != null
-    //                                              && c.users_data.get(i).getData() != null
-    //                                              && for all 0 <= j < c.users_data.get(i).getData().size() => c.users_data.get(i).getData().get(j) != null
-    //                                              && c.users_data.get(i).getShared() != null
-    //                                              && for all 0 <= j < c.users_data.get(i).getShared().size() => c.users_data.get(i).getShared().get(j) != null)
-*/
     // Inv_SecureDataContainerDoubleList (c) =
     // I(c) = c.users != null && c.users_data != null
+    //       && c.users.size() == c.users_data.size()
     //       && for all i 0..c.users.size()-1 => c.users.get(i) != null && Inv_User(c.users.get(i)
-    //       && for all i 0..c.users_data()-1 => c.users_data.get(i) != null && Inv_Data(c.users_data.get(i))
+    //       && for all i 0..c.users_data.size()-1 => c.users_data.get(i) != null && Inv_Data(c.users_data.get(i))
+    //       && for all 0 <= i < j < c.users.size() => c.users.get(i).getId().equals(c.users.get(j).getId())
+    //       && for all 0 <= i < c.users_data.size() =>
+    //              for all 0 <= j < c.users_data.get(i).getShared().size() =>
+    //                  exist 0 <= t < c.users.size() =>
+    //                      c.users_data.get(i).getShared.get(j).getOwner().equals(c.users.get(t).getId())
+    //                  && !c.users_data.get(i).getShared.get(j).getOwner().equals(c.users.get(i).getId())
 
 
     private List<User> users;

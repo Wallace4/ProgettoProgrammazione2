@@ -8,7 +8,7 @@ public class UserWithData<E> {
     //          {<Fun_SharedData(shared_data.get(i))> per ogni i 0...c.shared_data.size()-1}>
 
     // Inv_UserWithData (c) =
-    // I(c) = c.id != null && c.hash != null && c.data != null
+    // I(c) = c.id != null && c.hash != null && c.data != null && c.shared_data != null
     //          && for all 0 <= i < c.data.size() c.data.get(i) != null
     //          && for all 0 <= i < c.shared_data.size() => c.shared_data.get(i) != null
     //                                                      && Inv_SharedData(c.shared_data.get(i))

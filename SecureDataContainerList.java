@@ -8,6 +8,13 @@ public class SecureDataContainerList<E> implements SecureDataContainer<E> {
     // Inv_SecureDataContainerList (c) =
     // I(c) = c.users != null && for all i..c.users.size()-1 => c.users.get(i) != null
     //                                                          && Inv_UserWithData(c.users.get(i))
+    //        && for all 0 <= i < j < c.users.size() => !c.users.get(i).getId().equals(c.users.get(i).getId())
+    //        && for all 0 <= i < c.users.size() =>
+    //              for all 0 <= j < c.users.get(i).getSharedData(password).size() =>
+    //                  exist 0 <= t < c.users.size() /
+    //                      c.users.get(i).getSharedData(password).get(j).getOwner().equals(c.users.get(t).getId())
+    //                  && !c.users.get(i).getSharedData(password).get(j).getOwner().equals(c.users.get(i).getId())
+    //                          dove password è la password dell'utente
 
     private List<UserWithData<E>> users;
 
