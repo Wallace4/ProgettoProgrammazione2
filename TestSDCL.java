@@ -30,7 +30,7 @@ public class TestSDCL {
             sdcl.put("Gabriele", "Luce", "Magician");
             assert sdcl.getSize("Gabriele", "Luce") == 3;
 
-            //test eccezzione UserNoTFoundException
+            //test eccezione UserNoTFoundException
             try {
                 sdcl.put("Francesca", "Pr2", "Professoressa");
             } catch (UserNotFoundException e) {
@@ -42,7 +42,7 @@ public class TestSDCL {
             sdcl.copy("Gabriele", "Luce", "Heir");
             assert sdcl.getSize("Gabriele", "Luce") == 4;
 
-            //test eccezzione DataNotFoundException
+            //test eccezione DataNotFoundException
             try {
                 sdcl.copy("Gabriele", "Luce", "Hair"); //throwa DNFE
             } catch (DataNotFoundException e) {
@@ -92,6 +92,22 @@ public class TestSDCL {
             assert sdcl.getSize("Alfonso", "Sangue") == 3;
             assert sdcl.getSharedSize("Alfonso", "Sangue") == 1;
 
+            //test remove shared
+            sdcl.removeShared("Alfonso", "Sangue", new SharedData<String>("Michele", "Seer"));
+            assert sdcl.getSharedSize("Alfonso", "Sangue") == 0;
+
+            sdcl.put("Lorenza", "Vita", "Sylph");
+            sdcl.put("Lorenza", "Vita", "Silfide");
+            assert sdcl.getSize("Lorenza", "Vita") == 2;
+            System.out.println(sdcl.get("Lorenza", "Vita", "Silfide"));
+            System.out.println(sdcl.get("Lorenza", "Vita", 0));
+
+            sdcl.share("Lorenza", "Vita", "Daniele", "Silfide");
+            sdcl.insertShared("Daniele", "Vuoto", sdcl.getShared("Daniele", "Vuoto", 0));
+            System.out.println(sdcl.remove("Daniele", "Vuoto", "Silfide"));
+            assert sdcl.getSize("Daniele", "Vuoto") == 0;
+            assert sdcl.getSharedSize("Daniele", "Vuoto") == 0;
+            assert sdcl.getSize("Lorenza", "Vita") == 2;
 
 
         } catch (UserNotFoundException e) {
