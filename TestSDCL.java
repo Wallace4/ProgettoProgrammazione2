@@ -109,7 +109,6 @@ public class TestSDCL {
             assert sdcl.getSharedSize("Daniele", "Vuoto") == 0;
             assert sdcl.getSize("Lorenza", "Vita") == 2;
 
-
         } catch (UserNotFoundException e) {
             System.out.println("UNFE:");
             System.out.println(e.getMessage());
