@@ -1,11 +1,16 @@
 import java.util.Objects;
 
 public class SharedData<E> {
-    // Fun_SharedData(c) =
-    // f(c) = <owner, data>
+    /*
+    OVERVIEW: wrapper di dati di tipo E che contiene due elementi. Il dato di tipo E condiviso,
+              Ed una stringa (owner) contenente il nome utente di chi ha condiviso il dato.
 
-    // Inv_SharedData(c) =
-    // I(c) = owner != null && data != null
+    Fun_SharedData(c) =
+    f(c) = <owner, data>
+
+    Inv_SharedData(c) =
+    I(c) = owner != null && data != null
+    */
 
     private String owner;
     private E data;

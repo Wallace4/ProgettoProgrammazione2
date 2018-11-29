@@ -3,18 +3,20 @@ import java.util.Iterator;
 import java.util.List;
 
 public class SecureDataContainerList<E> implements SecureDataContainer<E> {
-    // f(c) = {<Fun_UserWithData(c.users.get(i))> per ogni i 0..users.size()-1;}
+    /*
+    Fun_SecureDataContainerList(c) =
+    f(c) = {<Fun_UserWithData(c.users.get(i))> per ogni i 0..users.size()-1;}
 
-    // Inv_SecureDataContainerList (c) =
-    // I(c) = c.users != null && for all i..c.users.size()-1 => c.users.get(i) != null
-    //                                                          && Inv_UserWithData(c.users.get(i))
-    //        && for all 0 <= i < j < c.users.size() => !c.users.get(i).getId().equals(c.users.get(i).getId())
-    //        && for all 0 <= i < c.users.size() =>
-    //              for all 0 <= j < c.users.get(i).getSharedData(password).size() =>
-    //                  exist 0 <= t < c.users.size() /
-    //                      c.users.get(i).getSharedData(password).get(j).getOwner().equals(c.users.get(t).getId())
-    //                  && !c.users.get(i).getSharedData(password).get(j).getOwner().equals(c.users.get(i).getId())
-    //                          dove password è la password dell'utente
+    Inv_SecureDataContainerList (c) =
+    I(c) = c.users != null && for all 0 <= i < c.users.size() => c.users.get(i) != null
+                                                          && Inv_UserWithData(c.users.get(i))
+           && for all 0 <= i < j < c.users.size() => !c.users.get(i).getId().equals(c.users.get(i).getId())
+           && for all 0 <= i < c.users.size() =>
+                 for all 0 <= j < c.users.get(i).getSharedData(password).size() =>
+                     exist 0 <= t < c.users.size() /
+                         c.users.get(i).shared_data.get(j).getOwner().equals(c.users.get(t).getId())
+                     && !c.users.get(i).shared_data.get(j).getOwner().equals(c.users.get(i).getId())
+    */
 
     private List<UserWithData<E>> users;
 
@@ -184,6 +186,12 @@ public class SecureDataContainerList<E> implements SecureDataContainer<E> {
         }
     }
 
+    /*  REQUIRES: owner != null
+        MODIFIES: null
+        EFFECT: restituisce l'utente corrispondente al nome owner, se presente nell'istanza della classe
+        THROWS: NullPointerException sse owner == null
+                UserNotFoundException sse l'utente non è presente
+     */
     private UserWithData<E> getUser (String owner) throws UserNotFoundException{
         for (UserWithData<E> u : users) {
             if (owner.equals(u.getId())) {

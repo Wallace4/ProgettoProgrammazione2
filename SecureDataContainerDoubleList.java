@@ -3,20 +3,23 @@ import java.util.Iterator;
 import java.util.List;
 
 public class SecureDataContainerDoubleList<E> implements SecureDataContainer<E> {
-    // f(c) = {<Fun_User(c.users.get(i),
-    //          Fun_Data(c.users_data.get(i)> per ogni i 0...users.size()-1;}
+    /*
+    Fun_SecureDataContainerDoubleList (c) =
+    f(c) = {<Fun_User(c.users.get(i),
+             Fun_Data(c.users_data.get(i)> per ogni i 0...users.size()-1;}
 
-    // Inv_SecureDataContainerDoubleList (c) =
-    // I(c) = c.users != null && c.users_data != null
-    //       && c.users.size() == c.users_data.size()
-    //       && for all i 0..c.users.size()-1 => c.users.get(i) != null && Inv_User(c.users.get(i)
-    //       && for all i 0..c.users_data.size()-1 => c.users_data.get(i) != null && Inv_Data(c.users_data.get(i))
-    //       && for all 0 <= i < j < c.users.size() => c.users.get(i).getId().equals(c.users.get(j).getId())
-    //       && for all 0 <= i < c.users_data.size() =>
-    //              for all 0 <= j < c.users_data.get(i).getShared().size() =>
-    //                  exist 0 <= t < c.users.size() =>
-    //                      c.users_data.get(i).getShared.get(j).getOwner().equals(c.users.get(t).getId())
-    //                  && !c.users_data.get(i).getShared.get(j).getOwner().equals(c.users.get(i).getId())
+    Inv_SecureDataContainerDoubleList (c) =
+    I(c) =   c.users != null && c.users_data != null
+          && c.users.size() == c.users_data.size()
+          && for all 0 <= i < c.users.size() => c.users.get(i) != null && Inv_User(c.users.get(i)
+          && for all 0 <= i < c.users_data.size() => c.users_data.get(i) != null && Inv_Data(c.users_data.get(i))
+          && for all 0 <= i < j < c.users.size() => c.users.get(i).getId().equals(c.users.get(j).getId())
+          && for all 0 <= i < c.users_data.size() =>
+                 for all 0 <= j < c.users_data.get(i).getShared().size() =>
+                     exist 0 <= t < c.users.size() =>
+                         c.users_data.get(i).getShared.get(j).getOwner().equals(c.users.get(t).getId())
+                     && !c.users_data.get(i).getShared.get(j).getOwner().equals(c.users.get(i).getId())
+    */
 
 
     private List<User> users;
@@ -199,6 +202,13 @@ public class SecureDataContainerDoubleList<E> implements SecureDataContainer<E> 
         }
     }
 
+    /*  REQUIRES: owner != null && passw != null
+        MODIFIES: null
+        EFFECT: restituisce l'user corrispondente al nome utente owner e la password passw
+        THROWS: NullPointerException sse owner == null || passw == null
+                UserNotFoundException sse owner non è presente nell'istanza della classe
+                IncorrectPasswordException sse la password non corrisponde
+     */
     private User getUser (String owner, String passw) throws UserNotFoundException, IncorrectPasswordException{
         for (User u : users) {
             if (owner.equals(u.getId())) {
