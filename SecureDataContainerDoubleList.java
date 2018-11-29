@@ -88,7 +88,7 @@ public class SecureDataContainerDoubleList<E> implements SecureDataContainer<E> 
         if (owner == null || passw == null || data == null)
             throw new NullPointerException();
         else {
-            int index = users_data.indexOf(data);
+            int index = users_data.get(users.indexOf(getUser(owner, passw))).getData().indexOf(data);
             if (index < 0)
                 throw new DataNotFoundException();
             else

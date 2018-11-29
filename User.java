@@ -38,7 +38,7 @@ public class User {
         if (passwd == null)
             throw new NullPointerException();
         else {
-            String hashToCheck = Hashing.shaDue(this.id, passwd);
+            String hashToCheck = Hashing.Md5(this.id, passwd);
             return this.hash.equals(hashToCheck);
         }
     }
