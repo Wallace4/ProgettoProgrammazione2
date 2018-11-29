@@ -3,18 +3,14 @@ import java.util.Iterator;
 
 public class TestSDCL {
 
-    static String[] users = {"Michele", "Gabriele", "Alfonso", "Lorenza", "Daniele"};
-    static String[] pass = {"Anima", "Luce", "Sangue", "Vita", "Vuoto"};
+    static String[] users = {"Alice", "Bob", "Charlie", "Dennie", "Eva"};
+    static String[] pass = {"aaa", "bbb", "ccc", "ddd", "eee"};
     static int n = 5; //numero di utenti utilizzati
 
     public static void main(String[] args) {
-
-        //SecureDataContainer<String> sdcl = new SecureDataContainerDoubleList<String>();
-        //SecureDataContainer<String> sdcl = new SecureDataContainerList<String>();
-
         SecureDataContainer<String> sdcl;
 
-        // Con questo metodo prima testo tutto SecureDataContainerList e poi SecureDataContainerDoubleList
+        // Con questo for prima testo tutto SecureDataContainerList e poi SecureDataContainerDoubleList
         // con gli stessi metodi e gli stessi passi
         for (int i = 0; i < 2; i++) {
             if (i == 0) {
@@ -39,7 +35,7 @@ public class TestSDCL {
 
             //Try-Catch fatto in modo che venga lanciata l'eccezione NameAlreadyTakenException
             try {
-                sdcl.createUser("Michele", "Tempo");
+                sdcl.createUser("Alice", "AAA");
             } catch (NameAlreadyTakenException e) {
                 System.out.println("test NATE:");
                 System.out.println(e.getMessage());
@@ -47,10 +43,10 @@ public class TestSDCL {
 
             try {
                 //TEST metodo put
-                assert sdcl.put("Gabriele", "Luce", "Heir");
-                assert sdcl.put("Gabriele", "Luce", "Erede");
-                assert sdcl.put("Gabriele", "Luce", "Magician");
-                assert sdcl.getSize("Gabriele", "Luce") == 3;
+                assert sdcl.put("Bob", "bbb", "LPP");
+                assert sdcl.put("Bob", "bbb", "PR2");
+                assert sdcl.put("Bob", "bbb", "PRL");
+                assert sdcl.getSize("Bob", "bbb") == 3;
 
                 //TEST eccezione UserNotFoundException
                 try {
@@ -61,41 +57,41 @@ public class TestSDCL {
                 }
 
                 //TEST metodo copy
-                sdcl.copy("Gabriele", "Luce", "Heir");
-                assert sdcl.getSize("Gabriele", "Luce") == 4;
+                sdcl.copy("Bob", "bbb", "LPP");
+                assert sdcl.getSize("Bob", "bbb") == 4;
 
                 //TEST eccezione DataNotFoundException
                 try {
-                    sdcl.copy("Gabriele", "Luce", "Hair"); //throwa DNFE
+                    sdcl.copy("Bob", "bbb", "Lpp"); //throwa DNFE
                 } catch (DataNotFoundException e) {
                     System.out.println("test DNFE:");
                     System.out.println(e.getMessage());
                 }
 
                 //TEST remove
-                assert sdcl.put("Michele", "Anima", "Seer");
-                sdcl.copy("Michele", "Anima", "Seer");
-                sdcl.copy("Michele", "Anima", "Seer");
-                sdcl.copy("Michele", "Anima", "Seer");
-                assert sdcl.remove("Michele", "Anima", "Seer").equals("Seer");
-                assert sdcl.remove("Michele", "Anima", "Seer").equals("Seer");
-                assert sdcl.getSize("Michele", "Anima") == 2;
+                assert sdcl.put("Alice", "aaa", "ROB");
+                sdcl.copy("Alice", "aaa", "ROB");
+                sdcl.copy("Alice", "aaa", "ROB");
+                sdcl.copy("Alice", "aaa", "ROB");
+                assert sdcl.remove("Alice", "aaa", "ROB").equals("ROB");
+                assert sdcl.remove("Alice", "aaa", "ROB").equals("ROB");
+                assert sdcl.getSize("Alice", "aaa") == 2;
 
                 //TEST eccezione IncorrectPasswordException
                 try {
-                    sdcl.remove("Michele", "anima", "Seer");
+                    sdcl.remove("Alice", "aaa", "ROB");
                 } catch (IncorrectPasswordException e) {
                     System.out.println("test IPE:");
                     System.out.println(e.getMessage());
                 }
 
                 //TEST Shared
-                sdcl.share("Gabriele", "Luce", "Alfonso", "Erede");
-                sdcl.share("Gabriele", "Luce", "Alfonso", "Heir");
-                sdcl.share("Gabriele", "Luce", "Alfonso", "Magician");
-                sdcl.share("Michele", "Anima", "Alfonso", "Seer");
-                assert sdcl.getSize("Alfonso", "Sangue") == 0;
-                assert sdcl.getSharedSize("Alfonso", "Sangue") == 4;
+                sdcl.share("Bob", "bbb", "Charlie", "PR2");
+                sdcl.share("Bob", "bbb", "Charlie", "LPP");
+                sdcl.share("Bob", "bbb", "Charlie", "PRL");
+                sdcl.share("Alice", "aaa", "Charlie", "ROB");
+                assert sdcl.getSize("Charlie", "ccc") == 0;
+                assert sdcl.getSharedSize("Charlie", "ccc") == 4;
 
                 //TEST iterator per accettare gli shared
                 //Note: Qui creo un array dove copio gli elementi trovati con l'iterator,
@@ -104,39 +100,39 @@ public class TestSDCL {
                 //      una ConcurrentModificationException.
                 //      Uso quindi questo iterator solo per selezionare gli elementi che mi interessa accettare,
                 //      e poi uso un altro for per accettarli definitivamente.
-                //      In questo caso accetto solo gli elementi che mi sono stati mandati da Gabriele
+                //      In questo caso accetto solo gli elementi che mi sono stati mandati da Bob
                 ArrayList<SharedData<String>> asd = new ArrayList<>();
-                for (Iterator<SharedData<String>> it = sdcl.getSharedIterator("Alfonso", "Sangue"); it.hasNext(); ) {
+                for (Iterator<SharedData<String>> it = sdcl.getSharedIterator("Charlie", "ccc"); it.hasNext(); ) {
                     SharedData<String> sd = it.next();
-                    if (sd.getOwner().equals("Gabriele")) {
+                    if (sd.getOwner().equals("Bob")) {
                         asd.add(sd);
                     }
                 }
                 for (SharedData<String> sd : asd) {
-                    assert sdcl.insertShared("Alfonso", "Sangue", sd);
+                    assert sdcl.insertShared("Charlie", "ccc", sd);
                 }
-                assert sdcl.getSize("Alfonso", "Sangue") == 3;
-                assert sdcl.getSharedSize("Alfonso", "Sangue") == 1;
+                assert sdcl.getSize("Charlie", "ccc") == 3;
+                assert sdcl.getSharedSize("Charlie", "ccc") == 1;
 
                 //TEST remove shared
-                SharedData<String> sd = new SharedData<String>("Michele", "Seer");
-                assert sdcl.removeShared("Alfonso", "Sangue", sd).equals(sd);
-                assert sdcl.getSharedSize("Alfonso", "Sangue") == 0;
+                SharedData<String> sd = new SharedData<String>("Alice", "ROB");
+                assert sdcl.removeShared("Charlie", "ccc", sd).equals(sd);
+                assert sdcl.getSharedSize("Charlie", "ccc") == 0;
 
                 //TEST get
-                assert sdcl.put("Lorenza", "Vita", "Sylph");
-                assert sdcl.put("Lorenza", "Vita", "Silfide");
-                assert sdcl.getSize("Lorenza", "Vita") == 2;
-                assert sdcl.get("Lorenza", "Vita", "Silfide").equals("Silfide");
-                assert sdcl.get("Lorenza", "Vita", 0).equals("Sylph");
+                assert sdcl.put("Dennie", "ddd", "ALGO");
+                assert sdcl.put("Dennie", "ddd", "CPS");
+                assert sdcl.getSize("Dennie", "ddd") == 2;
+                assert sdcl.get("Dennie", "ddd", "CPS").equals("CPS");
+                assert sdcl.get("Dennie", "ddd", 0).equals("ALGO");
 
                 //TEST getShared
-                sdcl.share("Lorenza", "Vita", "Daniele", "Silfide");
-                assert sdcl.insertShared("Daniele", "Vuoto", sdcl.getShared("Daniele", "Vuoto", 0));
-                assert sdcl.remove("Daniele", "Vuoto", "Silfide").equals("Silfide");
-                assert sdcl.getSize("Daniele", "Vuoto") == 0;
-                assert sdcl.getSharedSize("Daniele", "Vuoto") == 0;
-                assert sdcl.getSize("Lorenza", "Vita") == 2;
+                sdcl.share("Dennie", "ddd", "Eva", "CPS");
+                assert sdcl.insertShared("Eva", "eee", sdcl.getShared("Eva", "eee", 0));
+                assert sdcl.remove("Eva", "eee", "CPS").equals("CPS");
+                assert sdcl.getSize("Eva", "eee") == 0;
+                assert sdcl.getSharedSize("Eva", "eee") == 0;
+                assert sdcl.getSize("Dennie", "ddd") == 2;
 
                 System.out.println();
 
