@@ -134,6 +134,15 @@ public class TestSDCL {
                 assert sdcl.getSharedSize("Eva", "eee") == 0;
                 assert sdcl.getSize("Dennie", "ddd") == 2;
 
+                //TEST eccezione SharingToSelfException
+                try {
+                    sdcl.put("Eva", "eee", "AE");
+                    sdcl.share("Eva", "eee", "Eva", "AE");
+                } catch (SharingToSelfException e) {
+                    System.out.println("test STSE:");
+                    System.out.println(e.getMessage());
+                }
+
                 System.out.println();
 
             } catch (UserNotFoundException e) {
@@ -144,6 +153,9 @@ public class TestSDCL {
                 e.printStackTrace();
             } catch (DataNotFoundException e) {
                 System.out.println("DNFE:");
+                e.printStackTrace();
+            } catch (SharingToSelfException e) {
+                System.out.println("STSE:");
                 e.printStackTrace();
             }
         }

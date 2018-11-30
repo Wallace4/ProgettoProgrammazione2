@@ -121,9 +121,11 @@ public class SecureDataContainerList<E> implements SecureDataContainer<E> {
     }
 
     @Override
-    public void share(String owner, String passw, String other, E data) throws UserNotFoundException, IncorrectPasswordException, DataNotFoundException {
+    public void share(String owner, String passw, String other, E data) throws UserNotFoundException, IncorrectPasswordException, DataNotFoundException, SharingToSelfException {
         if (owner == null || passw == null || other == null || data == null)
             throw new NullPointerException();
+        else if (owner.equals(other))
+            throw new SharingToSelfException(owner +", non puoi condividere dati a te stesso");
         else {
             UserWithData<E> source = getUser(owner);
             UserWithData<E> destination = getUser(other);

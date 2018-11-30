@@ -132,9 +132,11 @@ public class SecureDataContainerDoubleList<E> implements SecureDataContainer<E> 
     }
 
     @Override
-    public void share(String owner, String passw, String other, E data) throws UserNotFoundException, IncorrectPasswordException, DataNotFoundException {
+    public void share(String owner, String passw, String other, E data) throws UserNotFoundException, IncorrectPasswordException, DataNotFoundException, SharingToSelfException {
         if (owner == null || passw == null || other == null || data == null)
             throw new NullPointerException();
+        else if (owner.equals(other))
+            throw new SharingToSelfException(owner +", non puoi condividere dati a te stesso");
         else {
             User source = getUser(owner, passw);
             for (User destination : users) {
@@ -143,11 +145,12 @@ public class SecureDataContainerDoubleList<E> implements SecureDataContainer<E> 
                         users_data.get(users.indexOf(destination)).getShared().add(new SharedData<E>(owner, data));
                         return;
                     } else
-                        throw new DataNotFoundException("Non è stato trovato il dato nell'insieme di elementi di "+owner);
+                        throw new DataNotFoundException("Non è stato trovato il dato nell'insieme di elementi di " + owner);
                 }
             }
-            throw new UserNotFoundException("Non è stato trovato l'utente: "+other);
+            throw new UserNotFoundException("Non è stato trovato l'utente: " + other);
         }
+
     }
 
     @Override

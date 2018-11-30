@@ -136,9 +136,10 @@ public interface SecureDataContainer<E> {
         THROWS: NullPointerException sse owner == null || passwd == null || other == null || data == null
                 UserNotFoundException sse non esiste un owner nella collezione
                 IncorrectPasswordException sse la password inserita non è quella corretta
+                SharingToSelfException sse owner == other
                 DataNotFoundException sse l'oggetto data non è dentro l'insieme di oggetti appartenenti ad owner
      */
-    public void share(String owner, String passw, String other, E data) throws UserNotFoundException, IncorrectPasswordException, DataNotFoundException;
+    public void share(String owner, String passw, String other, E data) throws UserNotFoundException, IncorrectPasswordException, DataNotFoundException, SharingToSelfException;
 
 
 
