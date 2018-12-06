@@ -205,7 +205,8 @@ public class SecureDataContainerDoubleList<E> implements SecureDataContainer<E> 
         }
     }
 
-    /*  REQUIRES: owner != null && passw != null
+    /*  REQUIRES: owner != null && passw != null &&
+                  exist i tc (owner.equals(users.get(i).getId()) && user.checkHash(passw)== true)
         MODIFIES: null
         EFFECT: restituisce l'user corrispondente al nome utente owner e la password passw
         THROWS: NullPointerException sse owner == null || passw == null

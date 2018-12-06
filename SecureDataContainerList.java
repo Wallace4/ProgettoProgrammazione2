@@ -189,6 +189,7 @@ public class SecureDataContainerList<E> implements SecureDataContainer<E> {
     }
 
     /*  REQUIRES: owner != null
+                  exist i tc owner.equals(users.get(i).getId())
         MODIFIES: null
         EFFECT: restituisce l'utente corrispondente al nome owner, se presente nell'istanza della classe
         THROWS: NullPointerException sse owner == null

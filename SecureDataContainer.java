@@ -23,7 +23,7 @@ public interface SecureDataContainer<E> {
     */
 
 
-    /*  REQUIRES: id != null && passw != null
+    /*  REQUIRES: id != null && passw != null && id non deve essere già presente nell'insieme degli utenti
         MODIFIES: this
         EFFECTS: Aggiunge a this un nuovo utente di nome id, avente la password passata come argomento.
                  l'insieme di dati iniziali appartenenti e quelli condivisi con id sono vuoti.
@@ -35,6 +35,7 @@ public interface SecureDataContainer<E> {
 
 
     /*  REQUIRES: owner != null && passw != null
+                  && owner deve essere presente nell'insieme degli utenti && la password deve corrispondere
         MODIFIES: null
         EFFECT: ritorna la cardinalità dell'insieme di oggetti appartenenti a owner sse la password corrisponde
         THROWS: NullPointerException sse owner == null || passwd == null
@@ -45,6 +46,7 @@ public interface SecureDataContainer<E> {
 
 
     /*  REQUIRES: owner != null && passw != null
+                  && owner deve essere presente nell'insieme degli utenti && la password deve corrispondere
         MODIFIES: null
         EFFECT: ritorna la cardinalità dell'insieme di oggetti condivisi con owner sse la password corrisponde
         THROWS: NullPointerException sse owner == null || passwd == null
@@ -54,6 +56,7 @@ public interface SecureDataContainer<E> {
     public int getSharedSize(String owner, String passw) throws UserNotFoundException, IncorrectPasswordException;
 
     /*  REQUIRES: owner != null && passw != null && data != null
+                  && owner deve essere presente nell'insieme degli utenti && la password deve corrispondere
         MODIFIES: this
         EFFECT: Inserisce data dentro l'insieme di oggetti appartenenti ad owner sse la password corrisponde
         THROWS: NullPointerException sse owner == null || passwd == null || data == null
@@ -65,6 +68,7 @@ public interface SecureDataContainer<E> {
 
 
     /*  REQUIRES: owner != null && passw != null && index >= 0 && index < getSize(owner, passw)
+                  && owner deve essere presente nell'insieme degli utenti && la password deve corrispondere
         MODIFIES: null
         EFFECT: ritorna l'oggetto dell'insieme appartenente ad owner e che corrisponde alla posizione index,
                 sse la password corrisponde
@@ -78,6 +82,7 @@ public interface SecureDataContainer<E> {
 
 
     /*  REQUIRES: owner != null && passw != null && data != null
+                  && owner deve essere presente nell'insieme degli utenti && la password deve corrispondere
         MODIFIES: null
         EFFECT: ritorna l'oggetto dell'insieme appartenente ad owner e che corrisponde all'elemento data,
                 sse la password corrisponde
@@ -91,6 +96,7 @@ public interface SecureDataContainer<E> {
 
 
     /*  REQUIRES: owner != null && passw != null && data != null
+                  && owner deve essere presente nell'insieme degli utenti && la password deve corrispondere
         MODIFIES: this
         EFFECT: rimuove la prima occorrenza dell'elemento data dall'insieme di oggetti appartenenti a owner,
                 sse la password corrisponde
@@ -104,6 +110,7 @@ public interface SecureDataContainer<E> {
 
 
     /*  REQUIRES: owner != null && passw != null && index >= 0 && index < getSize(owner, passw)
+                  && owner deve essere presente nell'insieme degli utenti && la password deve corrispondere
         MODIFIES: this
         EFFECT: rimuove la prima occorrenza dell'elemento alla posizione index dall'insieme di oggetti
                 appartenenti a owner, sse la password corrisponde.
@@ -117,6 +124,7 @@ public interface SecureDataContainer<E> {
 
 
     /*  REQUIRES: owner != null && passw != null && data != null
+                  && owner deve essere presente nell'insieme degli utenti && la password deve corrispondere
         MODIFIES: this
         EFFECT: Copia l'oggetto data presente nell'insieme appartenente a owner,
                 sse presente e sse la password corrisponde
@@ -130,6 +138,8 @@ public interface SecureDataContainer<E> {
 
 
     /*  REQUIRES: owner != null && passw != null && other != null && data != null
+                  && owner ed other devono essere presenti nell'insieme degli utenti
+                  && la password deve corrispondere
         MODIFIES: this
         EFFECT: Inserisce un oggetto data presente nell'insieme appartenente a owner nell'insieme di shared
                 appartenente a other, sse la password corrisponde per owner.
@@ -144,6 +154,7 @@ public interface SecureDataContainer<E> {
 
 
     /*  REQUIRES: owner != null && passw != null
+                  && owner deve essere presente nell'insieme degli utenti && la password deve corrispondere
         MODIFIES: null
         EFFECT: ritorna un iteratore per l'insieme dei dati appartenenti ad owner, sse la password corrisponde.
                 quindi l'iteratore permette di navigare solo per i dati, e non gli shared
@@ -157,6 +168,7 @@ public interface SecureDataContainer<E> {
     //Metodi extra
 
     /*  REQUIRES: owner != null && passw != null && data != null
+                  && owner deve essere presente nell'insieme degli utenti && la password deve corrispondere
         MODIFIES: this
         EFFECT: Sposta un data da l'insieme di oggetti condivisi con owner all'insieme di oggetti appartenenti ad owner,
                 sse la password corrisponde
@@ -170,6 +182,7 @@ public interface SecureDataContainer<E> {
 
 
     /*  REQUIRES: owner != null && passw != null && data != null
+                  && owner deve essere presente nell'insieme degli utenti && la password deve corrispondere
         MODIFIES: null
         EFFECT: ritorna l'oggetto appartenente all'insieme di dati condivisi con owner,
                 sse la password corrisponde. null altrimenti
@@ -183,6 +196,7 @@ public interface SecureDataContainer<E> {
 
 
     /*  REQUIRES: owner != null && passw != null && data != null
+                  && owner deve essere presente nell'insieme degli utenti && la password deve corrispondere
         MODIFIES: this
         EFFECT: elimina l'oggetto dall'insieme di oggetti condivisi con owner,
                 sse la password corrisponde.
@@ -195,6 +209,7 @@ public interface SecureDataContainer<E> {
 
 
     /*  REQUIRES: owner != null && passw != null
+                  && owner deve essere presente nell'insieme degli utenti && la password deve corrispondere
         MODIFIES: null
         EFFECT: ritorna un iteratore per l'insieme dei dati condivisi con owner, sse la password corrisponde.
                 quindi l'iteratore permette di navigare solo per gli shared, e non i dati
