@@ -57,4 +57,4 @@ Al contrario, le classi User e Data non possono essere usate da sole, dato che n
 
 ### Nota
 
-Progetto compilato con Java 10, ma dovrebbe avere problemi funzionare anche con Java 8. Non utilizza librerie esterne. Bisogna attivare le Assertion per testare il main, che ne fa un uso esaustivo. Per attivare le assertion basta avviare il progetto con il parametro -ea
+Progetto compilato con Java 10, ma non dovrebbe avere problemi funzionare anche con Java 8. Non utilizza librerie esterne. Bisogna attivare le Assertion per testare il main, che ne fa un uso esaustivo. Per attivare le assertion basta avviare il progetto con il parametro -ea
